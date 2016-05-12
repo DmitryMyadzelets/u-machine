@@ -1,7 +1,7 @@
 # Finite state machine micro helper for Node.js
 
 If you need a state-machine-like behavior and feel that great frameworks like [the one of Jake Gordon](https://github.com/jakesgordon/javascript-state-machine), [*machina* of Jim Cowart](https://github.com/ifandelse/machina.js) or [*Stately.js*
- of Florian Schäfer](https://github.com/fschaefer/Stately.js) is too much for you, then this helper may be just what you need.
+ of Florian Schäfer](https://github.com/fschaefer/Stately.js) is too much for you, then this helper may be just what you are looking for.
 
     npm install u-machine
 
@@ -12,7 +12,7 @@ Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](ht
 ```javascript
 var machine = require('u-machine');
 ```
-Pass any object to the `machine`. It returns a function which will be the only entry point for events. The object is required to have just one property `states` with states defined as functions.
+Pass any object to the `machine`. It returns a function which will be the only entry point for events. The object is required to have just one property `states` with states defined as functions:
 
 ```javascript
 {
@@ -69,7 +69,7 @@ If the both ways are mixed, then the `initial` state will be used:
 
 ```javascript
 var mini = machine({
-    initial: function () { // this function will not be called
+    initial: function () { // This function will not be called
         console.log('Second');
     },
     states: {
