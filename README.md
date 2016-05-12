@@ -1,14 +1,30 @@
-# u-machine
+# Finite state machine micro helper for Node.js
 
-Finite state machine micro helper for Node.js
+If you need a state-machine-like behavior and feel that great frameworks like [the one of Jake Gordon](https://github.com/jakesgordon/javascript-state-machine), [*machina* of Jim Cowart](https://github.com/ifandelse/machina.js) or [*Stately.js*
+ of Florian Schäfer](https://github.com/fschaefer/Stately.js) is too much for you, then this helper may be just what you need.
+
+    npm install u-machine
 
 Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](https://en.wikipedia.org/wiki/You_aren't_gonna_need_it) principles, the core of this module is just a couple of functions. Just look at [the source code](https://github.com/DmitryMyadzelets/u-machine/blob/master/index.js).
 
 # How to use
 
-Create a finite state machine, passing an object to it. The object must contain an object property `states`. Each state should be a function. The initial state must also be defined.
+```javascript
+var machine = require('u-machine');
+```
+Pass any object to the `machine`. It returns a function which will be the only entry point for events. The object is required to have just one property `states` with states defined as functions.
 
-On creation of the machine, a `current` property pointing to the current state will be added to the object you passed to. The machine also creates, after each transition, a `prior` property which refers to the state the machine was before making a transition.
+```javascript
+{
+    states: {
+        initial_state: function () {},
+        // ...
+        just_any_name: function () {}
+    }
+}
+```
+
+On creation of the machine, a `current` property pointing to the current state will be added to the object you passed to. The machine also creates, after each transition, a `prior` property which refers to the state the machine was before making the transition.
 
 ## Running
 
@@ -22,7 +38,7 @@ mini({}, [], function () {});
 
 ## Initial state
 
-There are two ways to define the initial state. One way is to name any state as `initial`:
+The definition of initial state for state machine is required. There are two ways to define the initial state. One way is to name any state as `initial`:
 
 ```javascript
 machine({
