@@ -8,7 +8,8 @@ Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](ht
 
 Create a finite state machine, passing an object to it. The object must contain an object propety `states`. Each state should be a function. The initial state must also be defined. There are two ways to do it. One way is to name any state as `initial`:
 
-    ```javascript
+```javascript
+
     var mini = machine({
         states: {
             initial: function () {
@@ -16,7 +17,8 @@ Create a finite state machine, passing an object to it. The object must contain 
             }
         }
     });
-    ```
+
+```
 
 Second way to define an initial state is to create `initial` function which would return it:
 
