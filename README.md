@@ -3,11 +3,11 @@
 If you need a state-machine-like behavior and feel that great frameworks like [the one of Jake Gordon](https://github.com/jakesgordon/javascript-state-machine), [_machina_ of Jim Cowart](https://github.com/ifandelse/machina.js) or [_Stately.js_
  of Florian Schäfer](https://github.com/fschaefer/Stately.js) is too much for you, then this helper may be just what you are looking for.
 
-    npm install u-machine
-
 Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](https://en.wikipedia.org/wiki/You_aren't_gonna_need_it) principles, the core of this module is just a couple of functions. Just look at [the source code](https://github.com/DmitryMyadzelets/u-machine/blob/master/index.js).
 
 # How to use
+
+    npm install u-machine
 
 ```javascript
 var machine = require('u-machine');
@@ -107,7 +107,7 @@ mini(); // Makes transition from 'stop' to 'run'
 mini(); // Makes transition from 'run' to 'run'
 ```
 
-In state functions the keyword `this` always refers to the object you created the machine with.
+In state functions the keyword `this` always refers to the object you created the machine with:
 
 ```javascript
 var obj = {
