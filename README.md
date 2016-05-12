@@ -6,19 +6,23 @@ Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](ht
 
 # How to use
 
-Create a finite state machine, passing an object to it. The object must contain an object propety `states`. Each state should be a function. The initial state must also be defined. There are two ways to do it. One way is to name any state as `initial`:
+Create a finite state machine, passing an object to it. The object must contain an object property `states`. Each state should be a function. The initial state must also be defined. 
+
+## Initial state
+
+There are two ways to define an initial state. One way is to name any state as `initial`:
 
 ```javascript
 var mini = machine({
     states: {
         initial: function () {
-            // your code
+            // some code
         }
     }
 });
 ```
 
-Second way to define an initial state is to create `initial` function which would return it:
+Another way is to create `initial` function which returns the initial state:
 
 ```javascript
 var mini = machine({
@@ -27,13 +31,66 @@ var mini = machine({
     },
     states: {
         stop: function () {
-            // your code
+            // some code
         }
     }
 });
 ```
 
-Below is a simple example for a coin-operated turnstile.
+## Running
+
+Run the machine passing events to it. Events may be just any stuff you want. The machine passes all parameters you throw to it to a function corresponding to the current state.
+
+```javascript
+var mini = machine({...});
+mini(); // event is undefined
+mini({}, [], function () {});
+```
+## Transitions
+
+To make a transition the current state should return a state the machine makes transition to. If no state is returned then the machine remains at the same state.
+
+```javascript
+var mini = machine({
+    initial: function () {
+        return this.states.stop;
+    },
+    states: {
+        stop: function () {
+            // some code
+            return this.states.run;
+        },
+        run: function () {
+            // some code
+        }
+    }
+});
+
+// The current state is 'stop'
+mini(); // Makes transition from 'stop' to 'run'
+mini(); // Makes transition from 'run' to 'run'
+```
+
+In state functions `this` always refers to the object you created the machine with.
+
+```javascript
+var obj = {
+    states: {
+        initial: function () {
+            console.log(this === obj);
+        }
+    }
+};
+
+var mini = machine(obj);
+
+mini(); // true
+mini.call({}); // true
+```
+
+# Examples
+
+Simple example for a coin-operated turnstile:
 
 ```javascript
 // Define the state machine
