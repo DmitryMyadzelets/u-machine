@@ -96,16 +96,16 @@ In state functions `this` always refers to the object you created the machine wi
 ```javascript
 var obj = {
     states: {
-        initial: function () {
-            console.log(this === obj);
+        initial: function (text) {
+            console.log(this === obj, text);
         }
     }
 };
 
 var mini = machine(obj);
 
-mini(); // true
-mini.call({}); // true
+mini('A'); // true 'A'
+mini.call({}, 'B'); // true 'B'
 ```
 
 # Examples
