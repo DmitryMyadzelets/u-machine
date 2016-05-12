@@ -6,7 +6,19 @@ Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](ht
 
 # How to use
 
-Create a finite state machine, passing an object to it. The object must contain an object property `states`. Each state should be a function. The initial state must also be defined. 
+Create a finite state machine, passing an object to it. The object must contain an object property `states`. Each state should be a function. The initial state must also be defined.
+
+On creation of the machine, a `current` property pointing to the current state will be added to the object you passed to it. After each transition the machine also maintains a `prior` property which refers to the prior state the machine was before the transition.
+
+## Running
+
+Run the machine passing events to it. Events may be just any stuff you want. The machine passes all parameters you throw to it to a function corresponding to the current state.
+
+```javascript
+var mini = machine({...});
+mini(); // event is undefined
+mini({}, [], function () {});
+```
 
 ## Initial state
 
@@ -37,7 +49,7 @@ machine({
 });
 ```
 
-If the both ways are mixed, then the `initial` state will be used.
+If the both ways are mixed, then the `initial` state will be used:
 
 ```javascript
 var mini = machine({
@@ -54,18 +66,9 @@ var mini = machine({
 mini(); // First
 ```
 
-## Running
-
-Run the machine passing events to it. Events may be just any stuff you want. The machine passes all parameters you throw to it to a function corresponding to the current state.
-
-```javascript
-var mini = machine({...});
-mini(); // event is undefined
-mini({}, [], function () {});
-```
 ## Transitions
 
-To make a transition the current state should return a state the machine makes transition to. If no state is returned then the machine remains at the same state.
+To make a transition the state function should return a state the machine jumps to. If no state is returned then the machine remains at the same state.
 
 ```javascript
 var mini = machine({
