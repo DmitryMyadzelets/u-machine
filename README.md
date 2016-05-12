@@ -1,6 +1,6 @@
 # Finite state machine micro helper for Node.js
 
-If you need a state-machine-like behavior and feel that great frameworks like [the one of Jake Gordon](https://github.com/jakesgordon/javascript-state-machine), [*machina* of Jim Cowart](https://github.com/ifandelse/machina.js) or [*Stately.js*
+If you need a state-machine-like behavior and feel that great frameworks like [the one of Jake Gordon](https://github.com/jakesgordon/javascript-state-machine), [_machina_ of Jim Cowart](https://github.com/ifandelse/machina.js) or [_Stately.js_
  of Florian Schäfer](https://github.com/fschaefer/Stately.js) is too much for you, then this helper may be just what you are looking for.
 
     npm install u-machine
@@ -84,7 +84,7 @@ mini(); // First
 
 ## Transitions
 
-To make a transition the state function should return a state the machine jumps to. If no state is returned then the machine remains at the same state.
+To make a transition to another state the state function should return a state the machine jumps to. If no state is returned then the machine remains at the same state.
 
 ```javascript
 var mini = machine({
@@ -97,7 +97,7 @@ var mini = machine({
             return this.states.run;
         },
         run: function () {
-            // some code
+            // will stay here forever
         }
     }
 });
@@ -107,7 +107,7 @@ mini(); // Makes transition from 'stop' to 'run'
 mini(); // Makes transition from 'run' to 'run'
 ```
 
-In state functions `this` always refers to the object you created the machine with.
+In state functions the keyword `this` always refers to the object you created the machine with.
 
 ```javascript
 var obj = {
@@ -122,6 +122,23 @@ var mini = machine(obj);
 
 mini('A'); // true 'A'
 mini.call({}, 'B'); // true 'B'
+```
+
+Your machine may have many event sources. If you need to observe all of them, create a `transition` function in your object. The events you pass to the machine will also be passed to this function _after_ they are processed in the current state:
+
+```javascript
+var mini = machine({
+    states: {
+        initial: function (n) {
+            n = 42;
+        }
+    },
+    transition: function (n) {
+        console.log(n);
+    }
+});
+
+[1, 2, 3].map(mini); // 1, 2, 3
 ```
 
 # Examples
