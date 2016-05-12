@@ -69,17 +69,17 @@ If the both ways are mixed, then the `initial` state will be used:
 
 ```javascript
 var mini = machine({
-    initial: function () { // This function will not be called
-        console.log('Second');
+    initial: function () {
+        console.log('This function will not be called');
     },
     states: {
         initial: function () {
-            console.log('First');
+            console.log('The initial state');
         }
     }
 });
 
-mini(); // First
+mini(); // The initial state
 ```
 
 ## Transitions
