@@ -10,10 +10,10 @@ Create a finite state machine, passing an object to it. The object must contain 
 
 ## Initial state
 
-There are two ways to define an initial state. One way is to name any state as `initial`:
+There are two ways to define the initial state. One way is to name any state as `initial`:
 
 ```javascript
-var mini = machine({
+machine({
     states: {
         initial: function () {
             // some code
@@ -25,7 +25,7 @@ var mini = machine({
 Another way is to create `initial` function which returns the initial state:
 
 ```javascript
-var mini = machine({
+machine({
     initial: function () {
         return this.states.stop;
     },
@@ -35,6 +35,23 @@ var mini = machine({
         }
     }
 });
+```
+
+If the both ways are mixed, then the `initial` state will be used.
+
+```javascript
+var mini = machine({
+    initial: function () { // this function will not be called
+        console.log('Second');
+    },
+    states: {
+        initial: function () {
+            console.log('First');
+        }
+    }
+});
+
+mini(); // First
 ```
 
 ## Running
