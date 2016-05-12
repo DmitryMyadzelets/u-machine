@@ -8,7 +8,7 @@ Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](ht
 
 Create a finite state machine, passing an object to it. The object must contain an object property `states`. Each state should be a function. The initial state must also be defined.
 
-On creation of the machine, a `current` property pointing to the current state will be added to the object you passed to it. After each transition the machine also maintains a `prior` property which refers to the prior state the machine was before the transition.
+On creation of the machine, a `current` property pointing to the current state will be added to the object you passed to it. The machine also creates, after each transition, a `prior` property which refers to the state the machine was before making a transition.
 
 ## Running
 
