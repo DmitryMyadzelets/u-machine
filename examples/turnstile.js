@@ -28,7 +28,7 @@ var definition = {
 };
 
 // Optional. Name anonymous state functions to log them during transitions
-machine.nameFunctions(definition.states);
+machine.deanonymize(definition.states);
 
 // Create the state machine
 var turnstile = machine(definition);
