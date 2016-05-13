@@ -143,7 +143,7 @@ mini({n: 1}); // 2
 
 ## Logging (debugging) transitions
 
-Inside the transition function the keyword `this` refers to the object with states description. The machine jumps from a `this.prior` state to a `this.current` state. However, if anonymous function are used for the state, it is hard to understand what are the actual prior and current states.
+Inside the transition function the keyword `this` refers to the object with states description. The machine jumps from the `this.prior` state to the `this.current` state. However, if states are anonymous functions, it is hard to understand what the actual the prior and current states are.
 
 Here is a solution you may use:
 
@@ -167,7 +167,7 @@ mini(); // transition from initial to run
 mini(); // transition from run to run
 ```
 
-The `deanonymize` method creates properties for functions with the same names as the states. You can change default name of property `named` to another passing it as a second argument:
+The `deanonymize` method creates properties for functions with the same values as the key names of the object. You can change default name of property `named` to another passing it as a second argument:
 
 ```javascript
 machine.deanonymize(obj.states, 'stateName');
