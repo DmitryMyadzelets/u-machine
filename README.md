@@ -143,7 +143,7 @@ mini({n: 1}); // 2
 
 ## Logging (debugging) transitions
 
-Inside the transition function the keyword `this` refers to the object with states description. The machine jumps from the `this.prior` state to the `this.current` state. However, if states are anonymous functions, it is hard to understand what the actual the prior and current states are.
+Inside the transition function the keyword `this` refers to the object with states description. The machine jumps from the `this.prior` state to the `this.current` state. However, if states are anonymous functions, it is hard to understand which actually the prior and current states are.
 
 Here is a solution you may use:
 
@@ -173,3 +173,79 @@ The `deanonymize` method creates properties for functions with the same values a
 machine.deanonymize(obj.states, 'stateName');
 ```
 
+## External and internal events
+
+Let's say we want the machine to count up to 10. Below is the example where we both control the counter and and fire events externally:
+
+```javascript
+var obj = {
+    counter: 0,
+    states: {
+        initial: function () {
+            return this.states.run;
+        },
+        run: function () {
+            this.counter += 1;
+        }
+    },
+    transition: function () {
+        console.log(this.counter);
+    }
+};
+
+var mini = machine(obj);
+
+while (obj.counter < 10) {
+    mini();
+}
+// 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+```
+
+It may be more convenient to let the machine control the logic, and fire events to itself internally. The events entry function is accessible by the `machine` property:
+
+```javascript
+var mini = machine({
+    counter: 0,
+    states: {
+        initial: function () {
+            setImmediate(this.machine);
+            return this.states.run;
+        },
+        run: function () {
+            this.counter += 1;
+            if (this.counter < 10) {
+                setImmediate(this.machine);
+            }
+        }
+    },
+    transition: function () {
+        console.log(this.counter);
+    }
+});
+
+mini(); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+```
+Another way, where we fire internal events at single point:
+
+```javascript
+var mini = machine({
+    counter: 0,
+    states: {
+        initial: function () {
+            return this.states.run;
+        },
+        run: function () {
+            this.counter += 1;
+            this.done = this.counter >= 10;
+        }
+    },
+    transition: function () {
+        console.log(this.counter);
+        if (!this.done) {
+            setImmediate(this.machine);
+        }
+    }
+});
+
+mini(); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+```
