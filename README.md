@@ -1,6 +1,6 @@
 # Finite state machine micro helper for Node.js
 
-If you need a state-machine-like behavior and feel that great frameworks like [the one of Jake Gordon](https://github.com/jakesgordon/javascript-state-machine), [_machina_ of Jim Cowart](https://github.com/ifandelse/machina.js) or [_Stately.js_
+If you need a state-machine-like behavior, and feel that great frameworks like [the one of Jake Gordon](https://github.com/jakesgordon/javascript-state-machine), [_machina_ of Jim Cowart](https://github.com/ifandelse/machina.js) or [_Stately.js_
  of Florian Schäfer](https://github.com/fschaefer/Stately.js) is too much for you, then this helper may be just what you are looking for.
 
 Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](https://en.wikipedia.org/wiki/You_aren't_gonna_need_it) principles, the core of this module is just [a couple of functions](https://github.com/DmitryMyadzelets/u-machine/blob/master/index.js).
@@ -65,7 +65,7 @@ machine({
 });
 ```
 
-If the both ways are mixed, then the `initial` state will be used:
+If the both ways are mixed then the `initial` state will be used:
 
 ```javascript
 var mini = machine({
@@ -129,15 +129,47 @@ Your machine may have many event sources. If you need to observe all of them, cr
 ```javascript
 var mini = machine({
     states: {
-        initial: function (n) {
-            n = 42;
+        initial: function (o) {
+            o.n += 1;
         }
     },
-    transition: function (n) {
-        console.log(n);
+    transition: function (o) {
+        console.log(o.n);
     }
 });
 
-[1, 2, 3].map(mini); // 1, 2, 3
+mini({n: 1}); // 2
+```
+
+## Logging (debugging) transitions
+
+Inside the transition function the keyword `this` refers to the object with states description. The machine jumps from a `this.prior` state to a `this.current` state. However, if anonymous function are used for the state, it is hard to understand what are the actual prior and current states.
+
+Here is a solution you may use:
+
+```javascript
+var obj = {
+    states: {
+        initial: function () {
+            return this.states.run;
+        },
+        run: function () {}
+    },
+    transition: function () {
+        console.log('transition from', this.prior.named, 'to', this.current.named);
+    }
+};
+var mini = machine(obj);
+
+machine.deanonymize(obj.states);
+
+mini(); // transition from initial to run
+mini(); // transition from run to run
+```
+
+The `deanonymize` method creates properties for functions with the same names as the states. You can change default name of property `named` to another passing it as a second argument:
+
+```javascript
+machine.deanonymize(obj.states, 'stateName');
 ```
 
