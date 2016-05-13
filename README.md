@@ -167,7 +167,7 @@ mini(); // transition from initial to run
 mini(); // transition from run to run
 ```
 
-The `deanonymize` method creates properties for functions with the same values as the key names of the object. You can change default name of property `named` to another passing it as a second argument:
+The `deanonymize` method creates properties for functions with the same values as the object's keys. You can change default property name `named` to another passing it as a second argument:
 
 ```javascript
 machine.deanonymize(obj.states, 'stateName');
