@@ -2,14 +2,15 @@
 'use strict';
 
 // ============================================================================
-// Extentions
+// Helpers
 
-// Creates o[Function].named = function name for each function of the object
-function nameFunctions(o) {
+// Creates o[Function][name] = kinda function name for each function of the object
+function deanonymize(o, name) {
+    name = name || 'named';
     if (o) {
         Object.keys(o).forEach(function (key) {
             if (typeof o[key] === 'function') {
-                o[key].named = key;
+                o[key][name] = key;
             }
         });
     }
@@ -33,13 +34,12 @@ function main() {
 // Returns the machine object main function. Sets the initial state as current
 function constructor(o) {
     var f = main.bind(o);
-    nameFunctions(o.states);
     o.current = o.states.initial || o.initial();
     o.machine = f;
     return f;
 }
 
 
-constructor.nameFunctions = nameFunctions;
+constructor.deanonymize = deanonymize;
 
 module.exports = constructor;
