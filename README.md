@@ -5,6 +5,10 @@ If you need a state-machine-like behavior, and feel that great frameworks like [
 
 Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](https://en.wikipedia.org/wiki/You_aren't_gonna_need_it) principles, the core of this module is just [a couple of functions](https://github.com/DmitryMyadzelets/u-machine/blob/master/index.js).
 
+## Use cases
+
+- [OAuth client for authorization with Facebook](https://github.com/DmitryMyadzelets/u-machine/tree/master/examples/oauth-client)
+
 # How to use
 
     npm install u-machine
