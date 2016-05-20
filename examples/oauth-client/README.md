@@ -13,4 +13,4 @@ This folder contains a fully functional [OAuth](https://en.wikipedia.org/wiki/OA
 
 ## How it is made
 
-![State machine for facebook](/examples/oauth-client/misc/facebook-state-machine.png)
+![State machine for facebook](https://github.com/DmitryMyadzelets/u-machine/raw/master/examples/oauth-client/mics/facebook-state-machine.png)
