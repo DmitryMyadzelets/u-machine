@@ -17,9 +17,9 @@ Pass any object to the `machine`. It returns a function which will be the only e
 ```javascript
 {
     states: {
-        initial_state: function () {},
+        initial: function () {},
         // ...
-        just_any_name: function () {}
+        any_name: function () {}
     }
 }
 ```
@@ -38,7 +38,7 @@ mini({}, [], function () {});
 
 ## Initial state
 
-The definition of initial state for state machine is required. There are two ways to define the initial state. One way is to name any state as `initial`:
+The definition of initial state for the state machine is required. There are two ways to define the initial state. One way is to name any state as `initial`:
 
 ```javascript
 machine({
@@ -156,7 +156,8 @@ var obj = {
         run: function () {}
     },
     transition: function () {
-        console.log('transition from', this.prior.named, 'to', this.current.named);
+        console.log('transition from', this.prior.named,
+                'to', this.current.named);
     }
 };
 var mini = machine(obj);
@@ -225,7 +226,7 @@ var mini = machine({
 
 mini(); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 ```
-Another way, where we fire internal events at single point:
+Another way, where we fire events at a single point:
 
 ```javascript
 var mini = machine({
@@ -236,12 +237,11 @@ var mini = machine({
         },
         run: function () {
             this.counter += 1;
-            this.done = this.counter >= 10;
         }
     },
     transition: function () {
         console.log(this.counter);
-        if (!this.done) {
+        if (this.counter < 10) {
             setImmediate(this.machine);
         }
     }
