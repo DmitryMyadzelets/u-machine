@@ -4,12 +4,18 @@
 var express = require('express');
 var Provider = require('./oauth/provider');
 
-var port = 5003;
+var port = 3000;
 var app = express();
 
 
 // Configure the provider with the data you and facebook agreed about:
 // https://developers.facebook.com/docs/apps/register
+// Create configuration file containig your configuration:
+// {
+//     "client": "your app id provided by facebook",
+//     "secret": "your app secret provided by facebok",
+//     "callback": "http://url_to_your_app:3000/auth/facebook"
+// }
 var facebook = new Provider('facebook', require('./oauth/.facebook.json'));
 
 

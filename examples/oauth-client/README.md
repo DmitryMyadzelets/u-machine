@@ -11,6 +11,10 @@ This folder contains a fully functional [OAuth](https://en.wikipedia.org/wiki/OA
 3. Edit `index.js` file putting your app's id, secret code and url.
 4. Launch it: `node .`, open browser and navigate to your app.
 
-## How it is made
+## Internals
+
+It is assumed that you know basics of OAuth authorization and familiar with applications built on [Express](http://expressjs.com/).
+
+At the first step of authorization flow you redirect the user to a login page of a authorization provider. If the user provides the credential, the provider will redirect the user's browser back to your authorization client with authorization code. This is actually the first event we have to maintain the state of the authorization flow from. With the code we ask the provider for an access token. Next, with the token we ask the provider about the user. The  graph of this state machine:
 
 ![State machine for facebook](https://github.com/DmitryMyadzelets/u-machine/raw/master/examples/oauth-client/mics/facebook-state-machine.png)
