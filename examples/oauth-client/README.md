@@ -7,10 +7,10 @@ This folder contains a fully functional [OAuth](https://en.wikipedia.org/wiki/OA
 ## See it working
 
 1. Download or clone the [`u-machine` module](https://github.com/DmitryMyadzelets/u-machine).
-2. Go to `u-machine/examples/oauth-client/` and execute `npm install`. It will download and install packages `express` and `request`.
+2. Go to `u-machine/examples/oauth-client/` and execute `npm install`. It will install packages `express` and `request`.
 3. Edit `index.js` file putting your app's id, secret code and url.
 4. Launch it: `node .`, then navigate with a browser to your app.
 
 ## How it is made
 
-![State machine for facebook](facebook-state-machine.png)
+![State machine for facebook](misc/facebook-state-machine.png)
