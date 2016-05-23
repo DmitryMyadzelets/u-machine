@@ -24,7 +24,7 @@ function check(err, res, body) {
     try {
         obj = JSON.parse(body);
     } catch (e) {
-        return this.machine(new Error('Failed to parse as JSON: ' + e.message));
+        return this.machine(new Error('Failed to parse as JSON (' + e.message + ') the text: ' + body));
     }
     if (res.statusCode !== 200) {
         return this.machine(obj);
