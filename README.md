@@ -7,7 +7,7 @@ Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](ht
 
 ## Use cases
 
-- [OAuth client for authorization with Facebook](https://github.com/DmitryMyadzelets/u-machine/tree/master/examples/oauth-client)
+- [OAuth client for authorization with Facebook](https://github.com/DmitryMyadzelets/u-machine/tree/master/examples/oauth-client), Google, Yandex and Vkontakte.
 
 # How to use
 

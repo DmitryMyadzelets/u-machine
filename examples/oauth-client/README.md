@@ -2,7 +2,7 @@
 
 This is a use case for [`u-machine` module](https://github.com/DmitryMyadzelets/u-machine). The module helps you design complex behavior of your software using state machines.
 
-This folder contains a fully functional [OAuth](https://en.wikipedia.org/wiki/OAuth) client. It uses Facebook as an authentication provider where you should [register your application](https://developers.facebook.com/docs/apps/register). However, you can add any authentication provider such Google, Twitter etc.
+This folder contains a fully functional [OAuth](https://en.wikipedia.org/wiki/OAuth) client. It uses Facebook as an authentication provider where you should [register your application](https://developers.facebook.com/docs/apps/register). The code contains Google, Yandex and Vkontakte providers, and you can easily add any other.
 
 ## See it working
 
