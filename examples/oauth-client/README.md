@@ -17,7 +17,7 @@ It is assumed that you know basics of OAuth authorization and familiar with appl
 
 At the first step of authorization flow you redirect the user to a login page of a authorization provider. If the user provides the credential, the provider will redirect the user's browser back to your authorization client with authorization code. This is actually the first event we have to maintain the state of the authorization flow from. Having the code we ask the provider for an access token. Next, with the token we ask the provider about the user. 
 
-Here is the graph of state machine. The events are shown as `input / output`.
+Here is the graph of state machine. The events are shown as `input [/ output]`.
 
 ![State machine for facebook](https://github.com/DmitryMyadzelets/u-machine/raw/master/examples/oauth-client/mics/facebook-state-machine.png)
 
