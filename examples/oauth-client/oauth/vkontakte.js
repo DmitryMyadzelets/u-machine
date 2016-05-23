@@ -3,21 +3,28 @@
 
 // Help
 //
-// Facebook site authorization: https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow
-// access_token is valid for about 60 days
+// Vkontakte site authorization: http://vk.com/dev/auth_sites
+// access_token is valid for 24 hours
+
 
 module.exports.urls = function (opt) {
     return {
-        redirect: 'https://www.facebook.com/dialog/oauth?'
+        redirect: 'https://oauth.vk.com/authorize?'
+                + '&v=5.50'
+                + '&display=mobile'
+                + '&scope=email'
                 + '&client_id=' + opt.client
                 + '&redirect_uri=' + opt.callback,
-        token: 'https://graph.facebook.com/v2.5/oauth/access_token?'
+        token: 'https://oauth.vk.com/access_token?'
+                + '&v=5.50'
                 + '&client_id=' + opt.client
                 + '&client_secret=' + opt.secret
                 + '&redirect_uri=' + opt.callback
-                + '&code=',
-        user: 'https://graph.facebook.com/v2.5/me?'
-                + 'access_token='
+                + '&code='
+        // user: 'https://api.vk.com/method/users.get?'
+        //         + '&v=5.50'
+        //         + '&fields=sex,bdate,photo_max_orig'
+        //         + '&access_token='
     };
 };
 
@@ -29,14 +36,6 @@ module.exports.states = function () {
             return this.states.token;
         },
         token: function (err, obj) { // Wait for access token
-            if (err) {
-                this.done(err);
-                return this.states.error;
-            }
-            this.request(this.urls.user + obj.access_token); // Get user info
-            return this.states.user;
-        },
-        user: function (err, obj) { // Wait for user info
             if (err) {
                 this.done(err);
                 return this.states.error;

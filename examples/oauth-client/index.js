@@ -16,7 +16,10 @@ var app = express();
 //     "secret": "your app secret provided by facebok",
 //     "callback": "http://url_to_your_app:3000/auth/facebook"
 // }
+var google = new Provider('google', require('./oauth/.google.json'));
+var yandex = new Provider('yandex', require('./oauth/.yandex.json'));
 var facebook = new Provider('facebook', require('./oauth/.facebook.json'));
+var vkontakte = new Provider('vkontakte', require('./oauth/.vkontakte.json'));
 
 
 function provider(req, res) {
@@ -24,7 +27,10 @@ function provider(req, res) {
 }
 
 app.get('/', facebook.redirect);
+app.get('/auth/google', google.authorize, provider);
+app.get('/auth/yandex', yandex.authorize, provider);
 app.get('/auth/facebook', facebook.authorize, provider);
+app.get('/auth/vkontakte', vkontakte.authorize, provider);
 
 
 app.listen(port, function () {

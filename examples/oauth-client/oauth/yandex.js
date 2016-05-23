@@ -3,21 +3,21 @@
 
 // Help
 //
-// Facebook site authorization: https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow
-// access_token is valid for about 60 days
+// Site authorization: https://tech.yandex.ru/oauth/doc/dg/reference/auto-code-client-docpage/
+// access_token is valid for 1 year!
 
 module.exports.urls = function (opt) {
     return {
-        redirect: 'https://www.facebook.com/dialog/oauth?'
-                + '&client_id=' + opt.client
-                + '&redirect_uri=' + opt.callback,
-        token: 'https://graph.facebook.com/v2.5/oauth/access_token?'
+        redirect: 'https://oauth.yandex.com/authorize?'
+                + '&response_type=code'
+                + '&client_id=' + opt.client,
+        token: '' // For Yandex it is used as POST method body
+                + '&grant_type=authorization_code'
                 + '&client_id=' + opt.client
                 + '&client_secret=' + opt.secret
-                + '&redirect_uri=' + opt.callback
                 + '&code=',
-        user: 'https://graph.facebook.com/v2.5/me?'
-                + 'access_token='
+        user: 'https://login.yandex.ru/info?'
+                + 'oauth_token='
     };
 };
 
@@ -25,7 +25,11 @@ module.exports.urls = function (opt) {
 module.exports.states = function () {
     return {
         initial: function (req, ignore) { // Wait for code from facebook
-            this.request(this.urls.token + req.query.code); // Get access token
+            this.request({
+                method: 'POST',
+                uri: 'https://oauth.yandex.ru/token',
+                body: this.urls.token + req.query.code
+            }); // Get access token
             return this.states.token;
         },
         token: function (err, obj) { // Wait for access token
