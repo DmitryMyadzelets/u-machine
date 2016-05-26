@@ -51,7 +51,7 @@ states = {
 }
 ```
 
-See the [complete code](https://github.com/DmitryMyadzelets/u-machine/blob/master/examples/oauth-client/oauth/facebook.js#L20) for facebook authentication state machine.
+See the [complete code](https://github.com/DmitryMyadzelets/u-machine/blob/master/examples/oauth-client/oauth/facebook.js) for facebook authentication state machine.
 
 ## Make it better
 
