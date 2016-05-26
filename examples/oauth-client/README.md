@@ -19,7 +19,7 @@ At the first step of authorization flow you redirect the user to a login page of
 
 Here is the graph of state machine. The events are shown as `input [/ output]`.
 
-![State machine for facebook](https://github.com/DmitryMyadzelets/u-machine/raw/master/examples/oauth-client/mics/facebook-state-machine.png)
+![State machine for facebook](https://github.com/DmitryMyadzelets/u-machine/raw/master/examples/oauth-client/misc/facebook-state-machine.png)
 
 A scratch of such state machine may look like this:
 
@@ -33,7 +33,7 @@ states = {
         if (err) {
             return this.states.error;
         }
-        this.request(... + obj.access_token); // Ask about user
+        request(... + obj.access_token); // Ask about user
         return this.states.user;
     },
     user: function (err, obj) { // Wait for user info
