@@ -180,7 +180,7 @@ machine.deanonymize(obj.states, 'stateName');
 
 ## External and internal events
 
-Let's say we want the machine to count up to 10. Below is the example where we both control the counter and and fire events externally:
+Let's say we want the machine to count up to 10. Below is the example where we both control the counter and fire events externally:
 
 ```javascript
 var obj = {
