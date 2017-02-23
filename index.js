@@ -5,15 +5,19 @@
 // Helpers
 
 // Creates o[Function][name] = kinda function name for each function of the object
+// Returns array with created names
 function deanonymize(o, name) {
     name = name || 'named';
+    var keys;
     if (o) {
-        Object.keys(o).forEach(function (key) {
+        keys = Object.keys(o);
+        keys.forEach(function (key) {
             if (typeof o[key] === 'function') {
                 o[key][name] = key;
             }
         });
     }
+    return keys || [];
 }
 
 
