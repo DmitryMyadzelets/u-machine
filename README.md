@@ -151,7 +151,7 @@ mini({n: 1}); // 2
 
 ## Current state
 
-You may wonder how to get the current state the machine at. Since the states are the functions you may use named state function and then use `.current.name` property. Alternatively, if you use anonymous functions, you can pass states to `machine.deanonymize` method. It creates `named` properties equal the states functions names.
+You may wonder how to get the current state the machine at. Since the states are the functions you may use named state function and then use `.current.name` property (make sure it's [supported](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name)). Alternatively, if you use anonymous functions, you can pass states to `machine.deanonymize` method. It creates `named` properties equal the states functions names.
 
 ```javascript
 var o = {
