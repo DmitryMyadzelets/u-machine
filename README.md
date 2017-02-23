@@ -31,7 +31,7 @@ Pass any object to the `machine`. It returns a function which will be the only e
 The machine creates other properties:
 
     current - A current state function
-    prior   - A state function the machine have made a transition from
+    prior   - The last state function the machine made a transition from
     machine - Reference to the machine itself
 
 ## Running
