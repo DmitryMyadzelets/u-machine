@@ -28,7 +28,11 @@ Pass any object to the `machine`. It returns a function which will be the only e
 }
 ```
 
-On creation of the machine, a `current` property pointing to the current state will be added to the object you passed to. The machine also creates, after each transition, a `prior` property which refers to the state the machine was before making the transition.
+The machine creates other properties:
+
+    current - A current state function
+    prior   - A state function the machine have made a transition from
+    machine - Reference to the machine itself
 
 ## Running
 
@@ -144,6 +148,25 @@ var mini = machine({
 
 mini({n: 1}); // 2
 ```
+
+## Current state
+
+You may wonder how to get the current state the machine at. Since the states are the functions you may use named state function and then use `.current.name` property. Alternatively, if you use anonymous functions, you can pass states to `machine.deanonymize` method. It creates `named` properties equal the states functions names.
+
+```javascript
+var o = {
+    states: {
+        initial: function () {},
+        final: function () {}
+    }
+};
+
+machine.deanonymize(o.states); // [ 'initial', 'final' ]
+machine(o);
+
+o.current.named; // 'initial'
+```
+
 
 ## Logging (debugging) transitions
 
