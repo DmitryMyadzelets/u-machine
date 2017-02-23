@@ -90,6 +90,24 @@ var mini = machine({
 mini(); // The initial state
 ```
 
+## Current state
+
+You may wonder how to get the current state the machine at. Since the states are the functions you may use named state function and then use `.current.name` property (make sure it's [supported](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name)). Alternatively, if you use anonymous functions, you can pass states to `machine.deanonymize` method. It creates `named` properties equal the states functions names.
+
+```javascript
+var o = {
+    states: {
+        initial: function () {},
+        final: function () {}
+    }
+};
+
+machine.deanonymize(o.states); // [ 'initial', 'final' ]
+machine(o);
+
+o.current.named; // 'initial'
+```
+
 ## Transitions
 
 To make a transition to another state the state function should return a state the machine jumps to. If no state is returned then the machine remains at the same state.
@@ -148,25 +166,6 @@ var mini = machine({
 
 mini({n: 1}); // 2
 ```
-
-## Current state
-
-You may wonder how to get the current state the machine at. Since the states are the functions you may use named state function and then use `.current.name` property (make sure it's [supported](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name)). Alternatively, if you use anonymous functions, you can pass states to `machine.deanonymize` method. It creates `named` properties equal the states functions names.
-
-```javascript
-var o = {
-    states: {
-        initial: function () {},
-        final: function () {}
-    }
-};
-
-machine.deanonymize(o.states); // [ 'initial', 'final' ]
-machine(o);
-
-o.current.named; // 'initial'
-```
-
 
 ## Logging (debugging) transitions
 
