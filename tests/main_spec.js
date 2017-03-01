@@ -12,7 +12,7 @@ describe('The module itself', function () {
         expect(typeof u).toBe('function');
     });
 
-    it('Has a member function "deanonymize"', function () {
+    it('Has a function "deanonymize"', function () {
         expect(typeof u.deanonymize).toBe('function');
     });
 });
@@ -26,14 +26,11 @@ describe('The module is a machine constructor which', function () {
         }).toThrow();
     });
 
-
-    it('Requires an object with "initial" property', function () {
+    it('Requires an object with "states.initial" function', function () {
         expect(function () {
             u({});
         }).toThrow();
-    });
 
-    it('Requires an "initial" state function', function () {
         expect(function () {
             u({
                 states: {
@@ -41,9 +38,7 @@ describe('The module is a machine constructor which', function () {
                 }
             });
         }).toThrow();
-    });
 
-    it('Requires an "initial" state function', function () {
         expect(function () {
             u({
                 states: {
@@ -62,10 +57,7 @@ describe('The module is a machine constructor which', function () {
                 initial: undefined
             });
         }).toThrow();
-    });
 
-
-    it('If no "initial" state function, requires "initial" object\'s function', function () {
         expect(function () {
             u({
                 states: {},
