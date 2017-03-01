@@ -8,11 +8,11 @@ const u = require('../index');
 
 describe('The module itself', function () {
 
-    it('Is a function', function () {
+    it('is a function', function () {
         expect(typeof u).toBe('function');
     });
 
-    it('Has a function "deanonymize"', function () {
+    it('has a function "deanonymize"', function () {
         expect(typeof u.deanonymize).toBe('function');
     });
 });
@@ -20,13 +20,11 @@ describe('The module itself', function () {
 
 describe('The module is a machine constructor which', function () {
 
-    it('Requires an object', function () {
+    it('requires an object with "states.initial" function', function () {
         expect(function () {
             u();
         }).toThrow();
-    });
 
-    it('Requires an object with "states.initial" function', function () {
         expect(function () {
             u({});
         }).toThrow();
@@ -50,7 +48,7 @@ describe('The module is a machine constructor which', function () {
         }).not.toThrow();
     });
 
-    it('If no "initial" state function, requires "initial" object\'s function', function () {
+    it('requires "initial" function if there is no "states.initial" function', function () {
         expect(function () {
             u({
                 states: {},
