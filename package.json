@@ -4,7 +4,7 @@
   "description": "Finite state machine micro helper",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine-node tests/"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/DmitryMyadzelets/u-machine/issues"
   },
-  "homepage": "https://github.com/DmitryMyadzelets/u-machine#readme"
+  "homepage": "https://github.com/DmitryMyadzelets/u-machine#readme",
+  "devDependencies": {
+    "jasmine-core": "^2.5.2"
+  }
 }
