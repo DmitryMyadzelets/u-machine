@@ -135,8 +135,9 @@ describe('Bad design of machine with callbacks to itself', function () {
 
 
 describe('Good design of machine with callback to itself', function () {
+    var testValue = 8;
     function external(callback) {
-        callback();
+        callback(testValue);
     }
 
     var good = {
@@ -148,8 +149,8 @@ describe('Good design of machine with callback to itself', function () {
                 });
                 return this.states.final;
             },
-            final: function () {
-                this.done = true;
+            final: function (v) {
+                this.test = v;
                 return;
             }
         }
@@ -162,45 +163,7 @@ describe('Good design of machine with callback to itself', function () {
 
         // Make test asynchronous since the machine is asynchronous too
         setTimeout(function () {
-            expect(good.done).toBe(true);
-            done();
-        });
-    });
-});
-
-
-describe('Best design of machine with callbacks to itself', function () {
-    // This design is better since
-    // it doesn't create functions inside of states.
-
-    function external(callback) {
-        callback();
-    }
-
-    var best = {
-        internal: function () {
-            external(this.machine);
-        },
-        states: {
-            initial: function () {
-                setTimeout(this.internal);
-                return this.states.final;
-            },
-            final: function () {
-                this.done = true;
-                return;
-            }
-        }
-    };
-
-    it('avoids race condition with an asynchronous helper', function (done) {
-        best.internal = best.internal.bind(best);
-        u(best)();
-
-        expect(best.current === best.states.final).toBe(true);
-        // Make test asynchronous since the machine is asynchronous too
-        setTimeout(function () {
-            expect(best.done).toBe(true);
+            expect(good.test).toBe(testValue);
             done();
         });
     });
