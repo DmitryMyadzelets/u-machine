@@ -17,7 +17,7 @@ Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](ht
 ```javascript
 const machine = require('u-machine')
 ```
-Pass any object to the `machine`. It returns a *runner* function which will be the only entry point for events. The object is required to have just one property `states` with states defined as functions:
+Pass any object to the `machine`. It returns a *runner* function which will be the entry point for all events. The object is required to have just one property `states` where states defined as functions:
 
 ```javascript
 const run = machine({
@@ -313,7 +313,7 @@ const events = require('u-machine/events')
 const run = machine({
     states: {
         initial: function (event) {
-        console.log(event)
+            console.log(event)
         }
     }
 })
@@ -336,3 +336,26 @@ functions, and will be passed as the first argument to the *runner* function.
 
 *object* - Optional object to which the named function will be attached as
 methods. If omitted, the methods will be attached to the *runner* function.
+
+## Multiple instances
+
+The simplest way to have multiple instances:
+
+```javascript
+const o = {
+    name: 'Run',
+    states: {
+        initial: function () {
+            console.log(Object.getPrototypeOf(this).name, this.name)
+        }
+    }
+}
+
+const a = Object.create(o)
+const b = Object.create(o)
+a.name = 'Fast'
+b.name = 'Long'
+
+machine(a)() // Run Fast
+machine(b)() // Run Long
+```
