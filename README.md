@@ -10,16 +10,17 @@ Based on the [KISS](https://en.wikipedia.org/wiki/KISS_principle) and [YAGNI](ht
 - [OAuth client for authorization with Facebook](https://github.com/DmitryMyadzelets/u-machine/tree/master/examples/oauth-client), Google, Yandex and Vkontakte.
 
 # How to use
-
+```bash
     npm install u-machine
-
-```javascript
-var machine = require('u-machine');
 ```
-Pass any object to the `machine`. It returns a function which will be the only entry point for events. The object is required to have just one property `states` with states defined as functions:
 
 ```javascript
-{
+const machine = require('u-machine')
+```
+Pass any object to the `machine`. It returns a *runner* function which will be the only entry point for events. The object is required to have just one property `states` with states defined as functions:
+
+```javascript
+const run = machine({
     states: {
         initial: function () {},
         // ...
@@ -32,16 +33,16 @@ The machine creates other properties:
 
     current - A current state function
     prior   - The last state function the machine made a transition from
-    machine - Reference to the machine itself
+    machine - Reference to the runner function 
 
 ## Running
 
 Run the machine passing events to it. Events may be just any stuff you want. The machine passes all parameters you throw to it to a function corresponding to the current state.
 
 ```javascript
-var mini = machine({...});
-mini(); // event is undefined
-mini({}, [], function () {});
+const run = machine({...})
+run() // event is undefined
+run({}, [], function () {})
 ```
 
 ## Initial state
@@ -55,7 +56,7 @@ machine({
             // some code
         }
     }
-});
+})
 ```
 
 Other way is to create `initial` function which returns the initial state:
@@ -63,31 +64,31 @@ Other way is to create `initial` function which returns the initial state:
 ```javascript
 machine({
     initial: function () {
-        return this.states.stop;
+        return this.states.stop
     },
     states: {
         stop: function () {
             // some code
         }
     }
-});
+})
 ```
 
 If the both ways are mixed then the `initial` state will be used:
 
 ```javascript
-var mini = machine({
+const run = machine({
     initial: function () {
-        console.log('This function will not be called');
+        console.log('This function will not be called')
     },
     states: {
         initial: function () {
-            console.log('The initial state');
+            console.log('The initial state')
         }
     }
-});
+})
 
-mini(); // The initial state
+run() // The initial state
 ```
 
 ## Current state
@@ -95,17 +96,17 @@ mini(); // The initial state
 You may wonder how to get the current state the machine at. Since the states are the functions you may use named state function and then use `.current.name` property (make sure it's [supported](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name)). Alternatively, if you use anonymous functions, you can pass states to `machine.deanonymize` method. It creates `named` properties equal the states functions names.
 
 ```javascript
-var o = {
+const o = {
     states: {
         initial: function () {},
         final: function () {}
     }
-};
+}
 
-machine.deanonymize(o.states); // [ 'initial', 'final' ]
-machine(o);
+machine.deanonymize(o.states) // [ 'initial', 'final' ]
+machine(o)
 
-o.current.named; // 'initial'
+o.current.named // 'initial'
 ```
 
 ## Transitions
@@ -113,58 +114,58 @@ o.current.named; // 'initial'
 To make a transition to another state the state function should return a state the machine jumps to. If no state is returned then the machine remains at the same state.
 
 ```javascript
-var mini = machine({
+const run = machine({
     initial: function () {
-        return this.states.stop;
+        return this.states.stop
     },
     states: {
         stop: function () {
             // some code
-            return this.states.run;
+            return this.states.run
         },
         run: function () {
             // will stay here forever
         }
     }
-});
+})
 
 // The current state is 'stop'
-mini(); // Makes transition from 'stop' to 'run'
-mini(); // Makes transition from 'run' to 'run'
+run() // Makes transition from 'stop' to 'run'
+run() // Makes transition from 'run' to 'run'
 ```
 
 In state functions the keyword `this` always refers to the object you created the machine with:
 
 ```javascript
-var obj = {
+const obj = {
     states: {
         initial: function (text) {
-            console.log(this === obj, text);
+            console.log(this === obj, text)
         }
     }
-};
+}
 
-var mini = machine(obj);
+const run = machine(obj)
 
-mini('A'); // true 'A'
-mini.call({}, 'B'); // true 'B'
+run('A') // true 'A'
+run.call({}, 'B') // true 'B'
 ```
 
 Your machine may have many event sources. If you need to observe all of them, create a `transition` function in your object. The events you pass to the machine will also be passed to this function _after_ they are processed in the current state:
 
 ```javascript
-var mini = machine({
+const run = machine({
     states: {
         initial: function (o) {
-            o.n += 1;
+            o.n += 1
         }
     },
     transition: function (o) {
-        console.log(o.n);
+        console.log(o.n)
     }
-});
+})
 
-mini({n: 1}); // 2
+run({n: 1}) // 2
 ```
 
 ## Logging (debugging) transitions
@@ -174,30 +175,30 @@ Inside the transition function the keyword `this` refers to the object with stat
 Here is a solution you may use:
 
 ```javascript
-var obj = {
+const obj = {
     states: {
         initial: function () {
-            return this.states.run;
+            return this.states.run
         },
         run: function () {}
     },
     transition: function () {
         console.log('transition from', this.prior.named,
-                'to', this.current.named);
+                'to', this.current.named)
     }
-};
-var mini = machine(obj);
+}
+const run = machine(obj)
 
-machine.deanonymize(obj.states);
+machine.deanonymize(obj.states)
 
-mini(); // transition from initial to run
-mini(); // transition from run to run
+run() // transition from initial to run
+run() // transition from run to run
 ```
 
 The `deanonymize` method creates properties for functions with the same values as the object's keys. You can change default property name `named` to another passing it as a second argument:
 
 ```javascript
-machine.deanonymize(obj.states, 'stateName');
+machine.deanonymize(obj.states, 'stateName')
 ```
 
 ## External and internal events
@@ -205,25 +206,25 @@ machine.deanonymize(obj.states, 'stateName');
 Let's say we want the machine to count up to 10. Below is the example where we both control the counter and fire events externally:
 
 ```javascript
-var obj = {
+const obj = {
     counter: 0,
     states: {
         initial: function () {
-            return this.states.run;
+            return this.states.run
         },
         run: function () {
-            this.counter += 1;
+            this.counter += 1
         }
     },
     transition: function () {
-        console.log(this.counter);
+        console.log(this.counter)
     }
-};
+}
 
-var mini = machine(obj);
+const run = machine(obj)
 
 while (obj.counter < 10) {
-    mini();
+    run()
 }
 // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 ```
@@ -231,48 +232,107 @@ while (obj.counter < 10) {
 It may be more convenient to let the machine control the logic, and fire events to itself internally. The events entry function is accessible by the `machine` property:
 
 ```javascript
-var mini = machine({
+const run = machine({
     counter: 0,
     states: {
         initial: function () {
-            setImmediate(this.machine);
-            return this.states.run;
+            setImmediate(this.machine)
+            return this.states.run
         },
         run: function () {
-            this.counter += 1;
+            this.counter += 1
             if (this.counter < 10) {
-                setImmediate(this.machine);
+                setImmediate(this.machine)
             }
         }
     },
     transition: function () {
-        console.log(this.counter);
+        console.log(this.counter)
     }
-});
+})
 
-mini(); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+run() // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 ```
 Another way, where we fire events at a single point:
 
 ```javascript
-var mini = machine({
+const run = machine({
     counter: 0,
     states: {
         initial: function () {
-            return this.states.run;
+            return this.states.run
         },
         run: function () {
-            this.counter += 1;
+            this.counter += 1
         }
     },
     transition: function () {
-        console.log(this.counter);
+        console.log(this.counter)
         if (this.counter < 10) {
-            setImmediate(this.machine);
+            setImmediate(this.machine)
         }
     }
-});
+})
 
-mini(); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+run() // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 ```
 
+## Named events
+
+In many cases we have one type of events in one state. If in one state we need to distinguish events then the name of event can be passed to the runner function.
+
+```javascript
+const run = machine({
+    states: {
+        initial: function (event) {
+            switch (event) {
+                case 'foo': return this.states.final
+                case 'bar': break
+            }
+        },
+        final: function (event) {
+            switch (event) {
+                case 'foo': break 
+                case 'bar': return this.states.initial
+            }
+        }
+    }
+})
+
+run('foo')
+run('bar')
+```
+
+To make this approach simplier and robust this module provides a helper. First
+the example:
+
+```javascript
+const machine = require('u-machine')
+const events = require('u-machine/events')
+
+const run = machine({
+    states: {
+        initial: function (event) {
+        console.log(event)
+        }
+    }
+})
+
+events(run, ['foo', 'bar'])
+
+run.foo() // 'foo'
+run.bar() // 'bar'
+```
+
+Syntax:
+```javascript
+let object = events(function *runner*, *events*[, *object*])
+```
+*runner* - The function which will be called when one of event function is
+called.
+
+*events* - Array of events' names. This names are used to created named
+functions, and will be passed as the first argument to the *runner* function.
+
+*object* - Optional object to which the named function will be attached as
+methods. If omitted, the methods will be attached to the *runner* function.
